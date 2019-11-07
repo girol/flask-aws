@@ -1,0 +1,16 @@
+language: generic
+sudo: required
+services:
+  - docker
+env:
+  global:
+    # Gera um id único para a imagem baseado no último commit
+    # output: commit_sha
+    - IMAGE_ID="$(git rev-parse --short=12 HEAD)"
+
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
+
+script:
+  - cd $TRAVIS_BUILD_DIR
+  - ./travis/build_image.sh
